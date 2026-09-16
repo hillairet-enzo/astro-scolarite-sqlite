@@ -1,0 +1,33 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import db from "../../lib/db";
+const rows = db.prepare(`
+  SELECT r.id, s.first_name, s.last_name, f.name as formation_name, r.academic_year
+  FROM registrations r
+  JOIN students s ON r.student_id = s.id
+  JOIN formations f ON r.formation_id = f.id
+`).all();
+---
+<Layout title="Inscriptions">
+  <h1>Inscriptions</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Inscription</th>
+        <th>Étudiant</th>
+        <th>Formation</th>
+        <th>Année Scolaire</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map(r => 
+        <tr>
+          <td>{r.id}</td>
+          <td>{r.first_name} {r.last_name}</td>
+          <td>{r.formation_name}</td>
+          <td>{r.academic_year}</td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</Layout>

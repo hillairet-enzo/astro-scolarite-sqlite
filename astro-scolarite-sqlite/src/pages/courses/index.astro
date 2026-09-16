@@ -1,0 +1,26 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import db from "../../lib/db";
+const rows = db.prepare("SELECT id, code, name, semester FROM courses ORDER BY name").all();
+---
+<Layout title="Cours">
+  <h1>Cours</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Nom du cours</th>
+        <th>Semestre</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map(c => 
+        <tr>
+          <td>{c.code}</td>
+          <td>{c.name}</td>
+          <td>{c.semester}</td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</Layout>
